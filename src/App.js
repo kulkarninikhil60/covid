@@ -19,12 +19,7 @@ function App() {
     <DistrictProvider>
       <DistrictInfo />
     </DistrictProvider>
-      {/* <CountryInfo />
-      <StateInfo />
-      <DistrictInfo />
-      <footer>
-        Developed by nikhil
-      </footer> */}
+        developed by nikhil
      
     </>
       
