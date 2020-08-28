@@ -1,25 +1,11 @@
-import React , {useEffect , useState} from 'react'
-import axios from 'axios'
+import React , {useContext} from 'react'
 import Card from './Card'
-
+import {CountryContext} from '../Context/CountryContext'
 
 const CountryInfo = () => {
   let nfObject = new Intl.NumberFormat('en-IN');
-    const [cases,setCases] = useState([])
+    const [cases,setCases] = useContext(CountryContext)
 
-    useEffect( () => {
-        async function getCases() {
-            try {
-              const response = await axios.get('https://api.covid19india.org/data.json');
-           console.log(response.data.statewise[0])
-             let cases = response.data.statewise[0]
-              setCases(cases)
-            } catch (error) {
-              console.error(error);
-            }
-          }
-          getCases()
-    },[] )
     return (
       <>
       <h4 className="country"> India Corona Cases </h4>

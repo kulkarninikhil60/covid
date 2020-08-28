@@ -1,51 +1,38 @@
-import React , {useState,useEffect} from 'react'
+import React , {useState,useEffect,useContext} from 'react'
 import axios from 'axios'
+import {DistrictContext} from '../Context/DistrictContext'
 import DistrictTable from './DistrictTable'
 
 const DistrictInfo = () => {
 
-const [stateNames,setStateNames] = useState([])
+const [stateNames,setStateNames] = useContext(DistrictContext)
 const [districtNames,setDistrictNames] = useState([])
 const [stateNameValue,setStateNameValue] = useState(20)
 const [districtCases,setDistrictCases] = useState([])
 
 useEffect( () => {
-    async function getCases() {
-        try {
-        const response = await axios.get('https://api.covid19india.org/state_district_wise.json');
-        console.log(response.data)
-        //getting names of states as keys
-        let stateNames = Object.keys(response.data)
-        stateNames[0] = "Select State"
-        stateNames[9] = "DNH and Diu Daman"
-        setStateNames(stateNames)
-        } catch (error) {
-          console.error(error);
-        }
+  async function getDistrictInfo() {
+      try {
+      const response = await axios.get('https://api.covid19india.org/state_district_wise.json');
+      const entries = Object.entries(response.data)
+      let stateWiseDistricts = entries[stateNameValue][1].districtData
+      let districtNames = Object.keys(stateWiseDistricts)
+      setDistrictNames(districtNames)
+      
+      let districtInfo = Object.values(stateWiseDistricts)
+      let districtCases = districtInfo.map( (districtCases) => {
+          return districtCases
+      } )
+      setDistrictCases(districtCases)
+      
+      } catch (error) {
+        console.error(error);
       }
-      getCases()
-} , [] )
-useEffect( () => {
-    async function getDistrictInfo() {
-        try {
-        const response = await axios.get('https://api.covid19india.org/state_district_wise.json');
-        const entries = Object.entries(response.data)
-        let stateWiseDistricts = entries[stateNameValue][1].districtData
-        let districtNames = Object.keys(stateWiseDistricts)
-        setDistrictNames(districtNames)
-        
-        let districtInfo = Object.values(stateWiseDistricts)
-        let districtCases = districtInfo.map( (districtCases) => {
-            return districtCases
-        } )
-        setDistrictCases(districtCases)
-        
-        } catch (error) {
-          console.error(error);
-        }
-      }
-      getDistrictInfo()
+    }
+    getDistrictInfo()
 } ,[stateNameValue] )
+
+
 
 const selectState = (event) => {
    setStateNameValue(event.target.value)

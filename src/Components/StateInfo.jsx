@@ -1,25 +1,12 @@
-import React , {useEffect,useState} from 'react'
-import axios from 'axios'
+import React , {useEffect,useState,useContext} from 'react'
+import {StateContext} from '../Context/StateContext'
 import TableState from './TableState'
 
 const  StateInfo  = ( ) => {
 
-const [stateCases,setStateCases] = useState([])
+const [stateCases,setStateCases] = useContext(StateContext)
 
-    useEffect(( ) => {
-        async function getCases() {
-                try {
-                  const response = await axios.get('https://api.covid19india.org/data.json');
-                console.log(response.data)
-                
-                  
-                setStateCases(response.data.statewise)
-                } catch (error) {
-                  console.error(error);
-                }
-              }
-              getCases()
-    },[])
+
 
     return (
         <div>
